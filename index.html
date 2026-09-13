@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kirish — Nazoratchi</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="login-shell">
+  <div class="login-visual">
+    <div class="wordmark"><span class="eye"></span>Nazoratchi</div>
+
+    <div>
+      <div class="ledger-sheet">
+        <div class="row"><span class="name">Dilmuss</span><span class="stamp live" style="transform:rotate(0);padding:2px 8px;font-size:10.5px;"><span class="dot"></span>Jonli</span></div>
+        <div class="row"><span class="name">Somsa House</span><span class="meta">6 kamera</span></div>
+        <div class="row"><span class="name">Green Mart</span><span class="stamp offline" style="transform:rotate(0);padding:2px 8px;font-size:10.5px;">Oflayn</span></div>
+        <div class="row"><span class="name">Faol Savdo</span><span class="meta">12 kamera</span></div>
+      </div>
+      <p class="caption" style="margin-top:20px;">
+        <strong>124 do'kon bitta daftarda.</strong> Har bir filial, har bir kamera — yozib boriladi, jonli kuzatiladi.
+      </p>
+    </div>
+
+    <p class="footnote">© 2026 Nazoratchi — savdo nuqtalarini nazorat qilish tizimi</p>
+  </div>
+
+  <div class="login-form-wrap">
+    <form class="login-form" id="loginForm" novalidate>
+      <h1>Daftarga kirish</h1>
+      <p class="sub">Admin hisobingiz bilan tizimga kiring</p>
+
+      <div class="login-error" id="loginError">Login yoki parol noto'g'ri. Qaytadan urinib ko'ring.</div>
+
+      <div class="field">
+        <label for="username">Login</label>
+        <input type="text" id="username" placeholder="admin" autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="password">Parol</label>
+        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+
+      <button type="submit" class="btn-primary">Kirish</button>
+
+      <div class="login-note">
+        <span>⚠</span>
+        <span>Bu — vizual maket. Haqiqiy autentifikatsiya backend tomonida amalga oshiriladi; parol hech qachon frontend kodida saqlanmaydi.</span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value.trim();
+  const err = document.getElementById('loginError');
+  if(!u || !p){
+    err.classList.add('show');
+    return;
+  }
+  err.classList.remove('show');
+  window.location.href = 'companies.html';
+});
+</script>
+</body>
+</html>

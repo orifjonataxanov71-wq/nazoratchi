@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kompaniyalar — Nazoratchi</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="wordmark" style="font-size:19px;"><span class="eye" style="width:17px;height:17px;"></span>Nazoratchi</div>
+
+    <nav class="nav-group">
+      <div class="label">Asosiy</div>
+      <a class="nav-link active" href="companies.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="7" height="14"/><rect x="14" y="3" width="7" height="18"/></svg>
+        Kompaniyalar
+      </a>
+      <a class="nav-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        Faoliyat jurnali
+      </a>
+      <a class="nav-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7l-9-5z"/></svg>
+        Tariflar
+      </a>
+    </nav>
+
+    <nav class="nav-group">
+      <div class="label">Tizim</div>
+      <a class="nav-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.65 1.65 0 0 0-1.8-.3 1.65 1.65 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.65 1.65 0 0 0-1-1.5 1.65 1.65 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.65 1.65 0 0 0 .3-1.8 1.65 1.65 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.65 1.65 0 0 0 1.5-1 1.65 1.65 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.65 1.65 0 0 0 1.8.3h0a1.65 1.65 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.65 1.65 0 0 0 1 1.5h0a1.65 1.65 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.65 1.65 0 0 0-.3 1.8v0a1.65 1.65 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.65 1.65 0 0 0-1.5 1z"/></svg>
+        Sozlamalar
+      </a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="avatar">AD</div>
+      <div>
+        <div style="color:var(--ink); font-weight:600;">Admin</div>
+        <div style="font-size:12px;">Super-admin</div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="breadcrumb">Bosh daftar <span class="sep">/</span> Kompaniyalar</div>
+        <h1 class="page-title">Kompaniyalar</h1>
+        <div class="page-sub">Tizimga ulangan barcha do'kon va filiallar ro'yxati</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+          Eksport
+        </button>
+        <button class="btn btn-accent">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Kompaniya qo'shish
+        </button>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="k">Jami kompaniyalar</div><div class="v" id="statTotal">—</div></div>
+      <div class="stat-card"><div class="k">Jonli holatda</div><div class="v live" id="statLive">—</div></div>
+      <div class="stat-card"><div class="k">Oflayn</div><div class="v offline" id="statOffline">—</div></div>
+      <div class="stat-card"><div class="k">Jami kameralar</div><div class="v" id="statCams">—</div></div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input class="search-input" id="searchInput" type="text" placeholder="Kompaniya nomi bo'yicha qidirish...">
+      </div>
+      <select class="select" id="statusFilter">
+        <option value="all">Barcha holatlar</option>
+        <option value="live">Jonli</option>
+        <option value="idle">Kutish holatida</option>
+        <option value="offline">Oflayn</option>
+      </select>
+      <select class="select" id="planFilter">
+        <option value="all">Barcha tariflar</option>
+        <option value="Standart">Standart</option>
+        <option value="Business">Business</option>
+        <option value="Pro">Pro</option>
+      </select>
+    </div>
+
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Kompaniya</th>
+            <th>Egasi</th>
+            <th>Tarif</th>
+            <th>Kameralar</th>
+            <th>Holati</th>
+            <th>Ro'yxatdan o'tgan</th>
+          </tr>
+        </thead>
+        <tbody id="companiesBody"></tbody>
+      </table>
+      <div class="pagination">
+        <div id="pageInfo">—</div>
+        <div class="page-btns" id="pageBtns"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script>
+const PAGE_SIZE = 5;
+let currentPage = 1;
+
+function statusStamp(status){
+  const map = {
+    live:    { cls:'live',    label:'Jonli' },
+    idle:    { cls:'idle',    label:'Kutishda' },
+    offline: { cls:'offline', label:'Oflayn' },
+  };
+  const s = map[status] || map.offline;
+  const dot = s.cls === 'offline' ? '' : `<span class="dot"></span>`;
+  return `<span class="stamp ${s.cls}">${dot}${s.label}</span>`;
+}
+
+function formatDate(iso){
+  const [y,m,d] = iso.split('-');
+  const months = ['yan','fev','mar','apr','may','iyun','iyul','avg','sen','okt','noy','dek'];
+  return `${d} ${months[parseInt(m,10)-1]} ${y}`;
+}
+
+function getFiltered(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const status = document.getElementById('statusFilter').value;
+  const plan = document.getElementById('planFilter').value;
+  return COMPANIES.filter(c => {
+    if (q && !c.name.toLowerCase().includes(q)) return false;
+    if (status !== 'all' && c.status !== status) return false;
+    if (plan !== 'all' && c.plan !== plan) return false;
+    return true;
+  });
+}
+
+function renderStats(){
+  document.getElementById('statTotal').textContent = COMPANIES.length;
+  document.getElementById('statLive').textContent = COMPANIES.filter(c=>c.status==='live').length;
+  document.getElementById('statOffline').textContent = COMPANIES.filter(c=>c.status==='offline').length;
+  document.getElementById('statCams').textContent = COMPANIES.reduce((s,c)=>s+c.cameras,0);
+}
+
+function renderTable(){
+  const filtered = getFiltered();
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage-1)*PAGE_SIZE;
+  const pageItems = filtered.slice(start, start+PAGE_SIZE);
+
+  const body = document.getElementById('companiesBody');
+  if (pageItems.length === 0){
+    body.innerHTML = `<tr><td colspan="6"><div class="empty-state"><h3>Hech narsa topilmadi</h3>Qidiruv yoki filtrlarni o'zgartirib ko'ring.</div></td></tr>`;
+  } else {
+    body.innerHTML = pageItems.map(c => `
+      <tr onclick="window.location.href='company.html?id=${c.id}'">
+        <td>
+          <div class="co-cell">
+            <div class="co-logo">${c.initials}</div>
+            <div>
+              <div class="co-name">${c.name}</div>
+              <div class="co-meta">${c.branch}</div>
+            </div>
+          </div>
+        </td>
+        <td>${c.ownerName}</td>
+        <td><span class="plan-chip">${c.plan}</span></td>
+        <td class="mono">${c.cameras} dona</td>
+        <td>${statusStamp(c.status)}</td>
+        <td class="mono">${formatDate(c.registered)}</td>
+      </tr>
+    `).join('');
+  }
+
+  document.getElementById('pageInfo').textContent =
+    filtered.length === 0 ? 'Natija yo\'q' : `${start+1}–${Math.min(start+PAGE_SIZE, filtered.length)} / jami ${filtered.length}`;
+
+  const btnWrap = document.getElementById('pageBtns');
+  let btns = '';
+  for(let i=1;i<=totalPages;i++){
+    btns += `<button class="${i===currentPage?'active':''}" onclick="currentPage=${i};renderTable();">${i}</button>`;
+  }
+  btnWrap.innerHTML = btns;
+}
+
+document.getElementById('searchInput').addEventListener('input', ()=>{ currentPage=1; renderTable(); });
+['statusFilter','planFilter'].forEach(id => document.getElementById(id).addEventListener('change', ()=>{ currentPage=1; renderTable(); }));
+
+renderStats();
+renderTable();
+</script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kameralar — Nazoratchi</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="wordmark" style="font-size:19px;"><span class="eye" style="width:17px;height:17px;"></span>Nazoratchi</div>
+    <nav class="nav-group">
+      <div class="label">Asosiy</div>
+      <a class="nav-link active" href="companies.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="7" height="14"/><rect x="14" y="3" width="7" height="18"/></svg>
+        Kompaniyalar
+      </a>
+      <a class="nav-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        Faoliyat jurnali
+      </a>
+      <a class="nav-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7l-9-5z"/></svg>
+        Tariflar
+      </a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="avatar">AD</div>
+      <div>
+        <div style="color:var(--ink); font-weight:600;">Admin</div>
+        <div style="font-size:12px;">Super-admin</div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="breadcrumb">
+          <a href="companies.html">Kompaniyalar</a><span class="sep">/</span><span id="crName">—</span>
+        </div>
+        <h1 class="page-title" id="pageTitle">—</h1>
+        <div class="page-sub" id="pageSub">—</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.5 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.65 4.36A9 9 0 0 0 20.5 15"/></svg>
+          Yangilash
+        </button>
+        <button class="btn btn-accent">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Kamera qo'shish
+        </button>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="k">Jami kameralar</div><div class="v" id="statTotal">—</div></div>
+      <div class="stat-card"><div class="k">Jonli</div><div class="v live" id="statLive">—</div></div>
+      <div class="stat-card"><div class="k">Oflayn</div><div class="v offline" id="statOffline">—</div></div>
+      <div class="stat-card"><div class="k">Hozir ichkarida</div><div class="v" id="statPeople">—</div></div>
+    </div>
+
+    <div class="filter-bar">
+      <select class="select" id="statusFilter">
+        <option value="all">Barcha kameralar</option>
+        <option value="live">Faqat jonli</option>
+        <option value="offline">Faqat oflayn</option>
+      </select>
+    </div>
+
+    <div class="cam-grid" id="camGrid"></div>
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const companyId = params.get('id') || COMPANIES[0].id;
+const company = COMPANIES.find(c => c.id === companyId) || COMPANIES[0];
+const cams = camerasFor(companyId);
+
+document.getElementById('crName').textContent = company.name;
+document.getElementById('pageTitle').textContent = company.name + ' — jonli kameralar';
+document.getElementById('pageSub').textContent = company.branch + ' • ' + cams.length + ' kamera';
+
+function renderStats(){
+  document.getElementById('statTotal').textContent = cams.length;
+  document.getElementById('statLive').textContent = cams.filter(c=>c.status==='live').length;
+  document.getElementById('statOffline').textContent = cams.filter(c=>c.status==='offline').length;
+  document.getElementById('statPeople').textContent = cams.reduce((s,c)=>s+(c.people||0),0);
+}
+
+function nowStamp(){
+  const d = new Date();
+  const p = n => String(n).padStart(2,'0');
+  return `${p(d.getDate())}.${p(d.getMonth()+1)}.${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+}
+
+function renderGrid(){
+  const filter = document.getElementById('statusFilter').value;
+  const list = cams.filter(c => filter === 'all' || (filter === 'live' && c.status !== 'offline') || (filter === 'offline' && c.status === 'offline'));
+  const grid = document.getElementById('camGrid');
+
+  if(list.length === 0){
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><h3>Kamera topilmadi</h3>Filtrni o'zgartirib ko'ring.</div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(c => {
+    const isOffline = c.status === 'offline';
+    return `
+    <div class="cam-card">
+      <div class="cam-feed ${isOffline?'offline':''}">
+        ${isOffline ? `
+          <div class="offline-msg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 1l22 22M9 9a3 3 0 0 0 4.24 4.24M14.12 5A9 9 0 0 1 21 12c0 1.5-.4 2.9-1.09 4.1M4.1 8A9 9 0 0 0 3 12c0 1.5.4 2.9 1.09 4.1"/></svg>
+            <div>Aloqa yo'q</div>
+          </div>
+        ` : `<div class="noise-move"></div>`}
+        <div class="cam-overlay-top">
+          ${isOffline ? '' : `<span class="stamp live" style="background:var(--paper-raised);"><span class="dot"></span>Jonli</span>`}
+          ${isOffline ? '' : `<div class="viewer-tag">${c.viewers} ko'ruvchi</div>`}
+        </div>
+        <div class="cam-overlay-bottom">
+          ${isOffline ? '' : `<span class="cam-timestamp">${nowStamp()}</span>`}
+          ${(!isOffline && c.people !== null) ? `<span class="viewer-tag">${c.people} kishi</span>` : ''}
+        </div>
+      </div>
+      <div class="cam-info">
+        <div>
+          <div class="cam-name">${c.name}</div>
+          <div class="cam-loc">${c.loc}</div>
+        </div>
+        ${isOffline
+          ? '<span class="stamp offline">Oflayn</span>'
+          : (c.status === 'idle' ? '<span class="stamp idle"><span class="dot"></span>Kutishda</span>' : '<span class="stamp live"><span class="dot"></span>Jonli</span>')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+document.getElementById('statusFilter').addEventListener('change', renderGrid);
+
+renderStats();
+renderGrid();
+setInterval(renderGrid, 5000);
+</script>
+</body>
+</html>
